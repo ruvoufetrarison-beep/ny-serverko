@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body { background: #fff0f5; font-family: sans-serif; text-align: center; margin: 0; padding: 20px; }
+        .pink-text { color: #ff1493; font-weight: bold; }
+        .card { background: white; margin: 20px auto; padding: 30px; border-radius: 30px; width: 90%; max-width: 350px; box-shadow: 0 10px 20px rgba(0,0,0,0.05); }
+        h1 { color: #ff1493; font-size: 2.5em; margin-bottom: 5px; }
+        .slogan { color: #daa520; font-size: 0.8em; margin-bottom: 30px; }
+        input { width: 100%; padding: 15px; margin: 10px 0; border: 1px solid #eee; border-radius: 25px; background: #fafafa; box-sizing: border-box; }
+        .btn-main { width: 100%; padding: 15px; background: #ff1493; color: white; border: none; border-radius: 25px; font-weight: bold; cursor: pointer; margin-top: 15px; }
+        .tabs { display: flex; justify-content: space-around; margin-bottom: 20px; font-weight: bold; }
+        .active-tab { background: #ff1493; color: white; padding: 5px 15px; border-radius: 20px; }
+    </style>
+</head>
+<body>
+    <h1>Mi.M.Mi</h1>
+    <p class="slogan">Mivavaka • Miray Hina • Mifankatia</p>
+    <div class="card">
+        <div class="tabs">
+            <span class="active-tab">HIRONA</span>
+            <span style="color: #ff1493; padding-top: 5px;">EFA MEMBRE</span>
+        </div>
+        <input type="text" id="user" placeholder="Laharana finday">
+        <input type="password" id="pass" placeholder="Tenimiafina">
+        <button class="btn-main" onclick="miditra()">HIDITRA</button>
+    </div>
+
+    <script>
+        async function miditra() {
+            const username = document.getElementById('user').value;
+            const password = document.getElementById('pass').value;
+            if(!username || !password) return alert("Fenoy ny banga");
+            
+            const res = await fetch('/api/signup', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({username, password})
+            });
+            const data = await res.json();
+            if(data.success) {
+                // Mitahiry ny anarana vonjimaika
+                localStorage.setItem('currentUser', username);
+                location.href = "/dashboard";
+            }
+        }
+    </script>
+</body>
+</html>
+
