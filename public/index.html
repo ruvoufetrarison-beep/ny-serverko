@@ -3,94 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mi.M.Mi - Fidirana</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        :root { --mmi-pink: #ff1493; }
-        body { background: #fff0f6; height: 100vh; display: flex; align-items: center; justify-content: center; font-family: sans-serif; }
-        .card { width: 100%; max-width: 400px; padding: 30px; border-radius: 25px; border: none; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
-        .logo { width: 80px; height: 80px; border-radius: 50%; border: 3px solid var(--mmi-pink); margin-bottom: 15px; }
-        .btn-mmi { background: var(--mmi-pink); color: white; border-radius: 50px; width: 100%; padding: 10px; font-weight: bold; }
-        .form-control { border-radius: 50px; margin-bottom: 15px; }
-        .id-box { background: #f8f9fa; border: 2px dashed var(--mmi-pink); padding: 15px; border-radius: 15px; margin-top: 20px; display: none; }
-    </style>
+    <title>Signup Mi.M.Mi</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="card text-center">
-        <img src="logo.jpg" class="logo mx-auto">
-        <h4 class="fw-bold" style="color: var(--mmi-pink);">Mi.M.Mi</h4>
-
-        <div id="loginSection">
-            <input type="text" id="lTel" class="form-control" placeholder="Laharana finday">
-            <input type="password" id="lPass" class="form-control" placeholder="Tenimiafina">
-            <button class="btn btn-mmi" onclick="doLogin()">Hiditra</button>
-            <p class="mt-3 small">Mbola tsy mpikambana? <a href="#" onclick="showStep(1)">Misoratra anarana</a></p>
-        </div>
-
-        <div id="step1" style="display:none;">
-            <h6>Dingana 1/2</h6>
-            <input type="text" id="sTel" class="form-control" placeholder="Laharana finday">
-            <input type="password" id="sPass" class="form-control" placeholder="Tenimiafina">
-            <button class="btn btn-mmi" onclick="showStep(2)">Manaraka</button>
-        </div>
-
-        <div id="step2" style="display:none;">
-            <h6>Dingana 2/2</h6>
-            <input type="text" id="sAnarana" class="form-control" placeholder="Anarana">
-            <input type="text" id="sFanampiny" class="form-control" placeholder="Fanampiny">
-            <input type="text" id="sAdiresy" class="form-control" placeholder="Adiresy">
-            <input type="number" id="sTaona" class="form-control" placeholder="Taona">
-            <button class="btn btn-mmi" onclick="doSignup()">Hamarina ny fisoratana</button>
-        </div>
-
-        <div id="idResult" class="id-box">
-            <p class="mb-1 small">Tehirizo tsara ity ID ity ho an'ny Badge-nao:</p>
-            <h5 id="generatedID" class="fw-bold text-dark"></h5>
-            <button class="btn btn-sm btn-dark rounded-pill mt-2" onclick="location.reload()">Hiverina hiditra (Sign In)</button>
-        </div>
+    <div class="container">
+        <h2>Fisoratana anarana Mi.M.Mi</h2>
+        <input type="text" id="username" placeholder="Anarana feno" required><br>
+        <input type="email" id="email" placeholder="Mailaka (Email)" required><br>
+        <input type="password" id="password" placeholder="Teny miafina" required><br>
+        <button onclick="handleSignup()" class="btn-action">Hisoratra anarana</button>
+        
+        <p id="msg"></p>
     </div>
 
     <script>
-        function showStep(n) {
-            document.getElementById('loginSection').style.display = 'none';
-            document.getElementById('step1').style.display = n==1 ? 'block' : 'none';
-            document.getElementById('step2').style.display = n==2 ? 'block' : 'none';
-        }
+        async function handleSignup() {
+            const username = document.getElementById('username').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
 
-        async function doLogin() {
-            const tel = document.getElementById('lTel').value;
-            const password = document.getElementById('lPass').value;
-            const res = await fetch('/login', {
+            const res = await fetch('/api/signup', {
                 method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({tel, password})
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username, email, password })
             });
+
             const data = await res.json();
             if(data.success) {
-                localStorage.setItem('member', JSON.stringify(data.member));
-                window.location.href = '/dashboard.html';
-            } else alert("Diso laharana na tenimiafina");
-        }
-
-        async function doSignup() {
-            const payload = {
-                tel: document.getElementById('sTel').value,
-                password: document.getElementById('sPass').value,
-                anarana: document.getElementById('sAnarana').value,
-                fanampiny: document.getElementById('sFanampiny').value,
-                adiresy: document.getElementById('sAdiresy').value,
-                taona: document.getElementById('sTaona').value
-            };
-            const res = await fetch('/signup', {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify(payload)
-            });
-            const data = await res.json();
-            if(data.success) {
-                document.getElementById('step2').style.display = 'none';
-                document.getElementById('idResult').style.display = 'block';
-                document.getElementById('generatedID').innerText = data.member.id;
+                alert("Tafiditra ianao! Ny ID-nao dia: " + data.mmm_id);
+                window.location.href = "/dashboard";
+            } else {
+                document.getElementById('msg').innerText = "Nisy fahadisoana.";
             }
         }
     </script>
