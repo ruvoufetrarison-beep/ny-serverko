@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard Mi.M.Mi</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <h2>Tonga soa, <span id="userName">Mpikambana</span>!</h2>
+        <p>ID Mi.M.Mi: <strong><span id="mmmId">...</span></strong></p>
+
+        <div class="menu-grid">
+            <button class="btn-menu" onclick="showSection('messages')">📩 Handefa Hafatra</button>
+            <button class="btn-menu" onclick="showSection('members')">👥 Lisitry ny Mpikambana</button>
+            <button class="btn-menu" onclick="location.href='/profil'">👤 Ny Profil-ko</button>
+        </div>
+
+        <hr>
+
+        <div id="messages" class="content-section" style="display:none;">
+            <h3>Hafatra ho an'ny Admin</h3>
+            <textarea id="msgInput" placeholder="Soraty eto ny hafatray..."></textarea>
+            <button onclick="sendMsg()" class="btn">Alefaso</button>
+        </div>
+
+        <div id="members" class="content-section" style="display:none;">
+            <h3>Mpikambana Mi.M.Mi</h3>
+            <ul id="memberList">
+                <li>Eo am-pitadiavana ny lisitra...</li>
+            </ul>
+        </div>
+        
+        <br>
+        <button onclick="logout()" class="btn-out">Hivoaka</button>
+    </div>
+
+    <script src="/js/dashboard.js"></script>
+</body>
+</html>
+
