@@ -1,0 +1,42 @@
+.menu-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    margin: 20px 0;
+}
+.btn-menu {
+    padding: 20px 10px;
+    border: none;
+    border-radius: 12px;
+    background: #ffffff;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.3s;
+}
+.btn-menu:hover { transform: translateY(-3px); background: #f0f0f0; }
+.logout { color: #ff4444; }
+.content-section {
+    background: white;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+.member-card {
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+    text-align: left;
+}
+.badge {
+    background: #007bff;
+    color: white;
+    padding: 2px 8px;
+    border-radius: 5px;
+}
+textarea {
+    width: 100%;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    padding: 10px;
+}
+
