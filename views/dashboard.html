@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="mg">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MI.M.Mi - Dashboard Matihanina</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.css">
+    <style>
+        :root { --mimi-pink: #e91e63; --mimi-blue: #1a237e; --mimi-light: #f8f9fa; }
+        body { background: var(--mimi-light); font-family: 'Inter', sans-serif; color: #333; }
+        
+        /* Navbar */
+        .navbar { background: white !important; box-shadow: 0 2px 15px rgba(0,0,0,0.05); }
+        .nav-link { color: var(--mimi-blue) !important; font-weight: 700; text-transform: uppercase; font-size: 13px; }
+
+        /* Carousel CRM Style */
+        .carousel-item { height: 480px; }
+        .carousel-img { object-fit: cover; height: 100%; filter: brightness(0.7); }
+        .carousel-caption { background: rgba(0,0,0,0.4); border-radius: 20px; padding: 30px; bottom: 20%; backdrop-filter: blur(5px); }
+
+        /* Content Sections */
+        .section-title { border-left: 5px solid var(--mimi-pink); padding-left: 15px; margin: 40px 0 20px; font-weight: 800; color: var(--mimi-blue); }
+        .card-topic { border: none; border-radius: 20px; transition: 0.3s; background: white; height: 100%; box-shadow: 0 5px 15px rgba(0,0,0,0.02); }
+        .card-topic:hover { transform: translateY(-10px); box-shadow: 0 15px 30px rgba(0,0,0,0.1); }
+        
+        /* Chat UI */
+        .chat-container { background: white; border-radius: 25px; overflow: hidden; height: 500px; display: flex; flex-direction: column; box-shadow: 0 10px 25px rgba(0,0,0,0.05); }
+        .chat-messages { flex-grow: 1; overflow-y: auto; padding: 20px; background: #fdfdfd; }
+        .msg-bubble { padding: 12px 18px; border-radius: 18px; margin-bottom: 12px; max-width: 85%; font-size: 14px; position: relative; }
+        .msg-ai { background: var(--mimi-blue); color: white; border-bottom-left-radius: 2px; }
+        .msg-user { background: #eee; color: #333; align-self: flex-end; border-bottom-right-radius: 2px; }
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg sticky-top">
+    <div class="container">
+        <a class="navbar-brand fw-bold" href="#"><span style="color:var(--mimi-pink)">MI</span>.M.Mi</a>
+        <div class="ms-auto d-flex align-items-center">
+            <span id="uNameDisplay" class="me-3 small fw-bold text-secondary">...</span>
+            <div class="bg-light p-2 rounded-circle border"><i class="bi bi-person-fill text-primary"></i></div>
+        </div>
+    </div>
+</nav>
+
+<div id="heroCarousel" class="carousel slide" data-bs-ride="carousel">
+    <div class="carousel-inner">
+        <div class="carousel-item active">
+            <img src="https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?q=80&w=1200" class="d-block w-100 carousel-img">
+            <div class="carousel-caption animate__animated animate__fadeInUp">
+                <h1 class="fw-bold">NY TOKANTRANO</h1>
+                <p class="lead">Fanorenana fototra mafy amin'ny alalan'ny fifankatiavana kristiana.</p>
+            </div>
+        </div>
+        <div class="carousel-item">
+            <img src="https://images.unsplash.com/photo-1507692049790-de58290a4334?q=80&w=1200" class="d-block w-100 carousel-img">
+            <div class="carousel-caption">
+                <h1 class="fw-bold">NY VAVAKA</h1>
+                <p class="lead">Hery lehibe ho an'ny vehivavy kristiana isan'andro.</p>
+            </div>
+        </div>
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev"><span class="carousel-control-prev-icon"></span></button>
+    <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next"><span class="carousel-control-next-icon"></span></button>
+</div>
+
+
+
+<div class="container py-5">
+    <div class="row g-4">
+        <div class="col-lg-8">
+            <h4 class="section-title text-uppercase">Lohahevitra Androany</h4>
+            <div class="row g-4">
+                <div class="col-md-6">
+                    <div class="card card-topic p-4">
+                        <i class="bi bi-mortarboard-fill fs-1 text-primary mb-3"></i>
+                        <h5>Fitaizana sy Fanabeazana</h5>
+                        <p class="small text-muted">Champ lexical momba ny zanaka sy ny sekoly kristiana.</p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card card-topic p-4">
+                        <i class="bi bi-egg-fried fs-1 text-warning mb-3"></i>
+                        <h5>Sakafo sy fahasalamana</h5>
+                        <p class="small text-muted">Ny sakafo mendrika ny kristiana sy ny fikarakarana vatana.</p>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="card card-topic p-4 bg-white">
+                        <h5 class="fw-bold text-primary border-bottom pb-2 mb-3">💡 FAQ & Fanohanana</h5>
+                        <div class="accordion accordion-flush" id="mimiFaq">
+                            <div class="accordion-item">
+                                <h2 class="accordion-header"><button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#f1">Ahoana no hidirana ho mpikambana?</button></h2>
+                                <div id="f1" class="accordion-collapse collapse" data-bs-parent="#mimiFaq"><div class="accordion-body small text-muted">Misoratra anarana mivantana amin'ny alalan'ny pejy fidirana ianao.</div></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <h4 class="section-title text-uppercase">Mimi AI Assistant ✨</h4>
+            <div class="chat-container">
+                <div id="chatBox" class="chat-messages d-flex flex-column"></div>
+                <div class="p-3 border-top d-flex gap-2">
+                    <input type="text" id="msgInput" class="form-control border-0 bg-light rounded-pill px-3" placeholder="Hanontany ny AI...">
+                    <button onclick="sendMsg()" class="btn btn-primary rounded-circle shadow"><i class="bi bi-send-fill"></i></button>
+                </div>
+            </div>
+            <div class="mt-4 p-3 bg-white rounded-4 shadow-sm">
+                <p class="small mb-1 text-muted">Support: <b>034 04 75 417</b></p>
+                <a href="https://facebook.com/PAGEMIMIMI" class="btn btn-outline-primary btn-sm w-100 rounded-pill">Pejy Facebook</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer class="bg-dark text-white py-5 mt-5">
+    <div class="container text-center">
+        <h3 class="fw-bold text-primary mb-3">MI.M.Mi</h3>
+        <p class="small opacity-50">"Mivavaka, Miray Hina, Mifankatia" - Farafangana, Madagascar</p>
+        <p class="small mb-0">© 2026. Zo rehetra voatokana.</p>
+    </div>
+</footer>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="/socket.io/socket.io.js"></script>
+<script>
+    const socket = io();
+    const user = JSON.parse(localStorage.getItem('userMimi'));
+    if(!user) location.href = '/';
+
+    $('#uNameDisplay').text(user.anarana);
+
+    function sendMsg() {
+        const txt = $('#msgInput').val();
+        if(txt) {
+            socket.emit('send-private-msg', { from: user.anarana, text: txt });
+            $('#msgInput').val('');
+        }
+    }
+
+    socket.on('new-private-msg', (data) => {
+        const isAI = data.from.includes('AI');
+        const me = data.from === user.anarana;
+        const type = isAI ? 'msg-ai' : (me ? 'msg-user' : '');
+        const align = me ? 'align-self-end' : 'align-self-start';
+        
+        $('#chatBox').append(`
+            <div class="msg-bubble ${type} ${align}">
+                <small class="fw-bold d-block mb-1">${data.from}</small>
+                ${data.text}
+            </div>
+        `);
+        $('#chatBox').scrollTop($('#chatBox')[0].scrollHeight);
+    });
+</script>
+</body>
+</html>
+
