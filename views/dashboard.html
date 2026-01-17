@@ -3,34 +3,61 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - Mi.M.Mi</title>
+    <title>Mi.M.Mi - Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root { --pink: #ff1493; --bg: #fff0f5; }
-        body { background: var(--bg); font-family: sans-serif; margin: 0; padding: 20px; display: flex; justify-content: center; }
-        .container { width: 100%; max-width: 450px; text-align: center; }
-        .badge { background: var(--pink); color: white; padding: 8px 20px; border-radius: 20px; display: inline-block; margin: 15px 0; font-weight: bold; }
-        .menu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 20px; }
-        .btn { background: white; border: none; padding: 25px 10px; border-radius: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); font-weight: bold; color: #444; cursor: pointer; }
-        .logout { color: red; grid-column: span 2; }
-        .box { background: white; padding: 20px; border-radius: 25px; margin-top: 20px; display: none; text-align: left; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+        :root { --pink: #ff1493; --gold: #daa520; --bg: #fff0f5; }
+        body { background: var(--bg); font-family: sans-serif; margin: 0; padding-bottom: 50px; }
+        
+        .header { background: var(--pink); color: white; padding: 35px 20px; text-align: center; border-radius: 0 0 40px 40px; }
+        .logo-box { width: 90px; height: 90px; background: white; border-radius: 50%; margin: 0 auto 10px; overflow: hidden; border: 3px solid var(--gold); }
+        .logo-box img { width: 100%; height: 100%; object-fit: cover; }
+
+        .card-main { background: white; width: 85%; margin: -35px auto 25px; padding: 25px; border-radius: 30px; box-shadow: 0 15px 35px rgba(0,0,0,0.1); text-align: center; }
+        .amount { font-size: 2.3rem; color: var(--gold); font-weight: bold; margin: 10px 0; }
+
+        .menu-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; padding: 0 20px; }
+        .menu-item { background: white; padding: 25px 10px; border-radius: 25px; text-align: center; cursor: pointer; border: none; box-shadow: 0 5px 15px rgba(0,0,0,0.03); }
+        .menu-item i { font-size: 1.8rem; color: var(--pink); margin-bottom: 10px; display: block; }
+        .menu-item span { font-weight: 600; font-size: 0.9rem; color: #444; }
+
+        .modal { position: fixed; bottom: 0; left: 0; width: 100%; background: white; border-radius: 35px 35px 0 0; padding: 30px 20px; box-sizing: border-box; transform: translateY(100%); transition: 0.5s cubic-bezier(0.4, 0, 0.2, 1); z-index: 1000; max-height: 80vh; overflow-y: auto; }
+        .modal.active { transform: translateY(0); }
+        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.4); display: none; z-index: 999; }
     </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h2>Tonga soa, <span id="userName" style="color:var(--pink);">...</span>!</h2>
-            <div class="badge">ID: <span id="mmmId">...</span></div>
-        </header>
-        
-        <div class="menu-grid">
-            <button class="btn" onclick="show('mbr')">👥 Mpikambana</button>
-            <button class="btn" onclick="show('msg')">📩 Hafatra</button>
-            <button class="btn logout" onclick="hivoaka()">🚪 Hivoaka</button>
-        </div>
-
-        <div id="mbr" class="box"><h3>Lisitry ny Mpikambana</h3><div id="list">Mampiditra...</div></div>
-        <div id="msg" class="box"><h3>Handefa Hafatra</h3><textarea style="width:100%; height:70px; border-radius:10px; border:1px solid #ddd; padding:10px; box-sizing:border-box;"></textarea><button style="width:100%; background:var(--pink); color:white; border:none; padding:10px; border-radius:20px; margin-top:10px; font-weight:bold;">ALEFASO</button></div>
+    <div class="header">
+        <div class="logo-box"><img src="/logo.jpg" alt="Logo"></div>
+        <h2 style="margin:0;">Miarahaba, <span id="uName">...</span></h2>
+        <p style="font-size:0.8rem; opacity:0.8;">ID: <span id="uId">...</span></p>
     </div>
+
+    <div class="card-main">
+        <div style="font-size: 0.8rem; color: #888; letter-spacing: 1px;">RAKI-BOLA (SOLFO)</div>
+        <div class="amount"><span id="uSolfo">0</span> <small style="font-size:1rem;">Ar</small></div>
+    </div>
+
+    <div class="menu-grid">
+        <button class="menu-item" onclick="openM('mbr')"><i class="fas fa-users"></i><span>Mpikambana</span></button>
+        <button class="menu-item" onclick="openM('rak')"><i class="fas fa-wallet"></i><span>Handoa Solfo</span></button>
+        <button class="menu-item" onclick="openM('faq')"><i class="fas fa-question-circle"></i><span>FAQ</span></button>
+        <button class="menu-item" onclick="hivoaka()" style="color:#ff4757;"><i class="fas fa-power-off"></i><span>Hivoaka</span></button>
+    </div>
+
+    <div class="overlay" id="overlay" onclick="closeM()"></div>
+
+    <div id="mbr" class="modal">
+        <h3 style="margin-top:0;"><i class="fas fa-users" style="color:var(--pink);"></i> Lisitry ny Mpikambana</h3>
+        <div id="listM">Mampiditra...</div>
+    </div>
+
+    <div id="faq" class="modal">
+        <h3 style="margin-top:0;"><i class="fas fa-info-circle" style="color:var(--pink);"></i> FAQ</h3>
+        <div onclick="toggleF(this)" style="padding:15px; border-bottom:1px solid #eee; font-weight:bold; color:var(--pink); cursor:pointer;">Inona no atao hoe Mi.M.Mi?</div>
+        <div style="display:none; padding:15px; font-size:0.9rem; color:#666;">Fikambanana mivavaka, miray hina ary mifankatia ho amin'ny fampandrosoana ny rehetra.</div>
+    </div>
+
     <script src="/js/dashboard.js"></script>
 </body>
 </html>
