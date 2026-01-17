@@ -1,2 +1,2 @@
-[]
+echo "[]" > database.json
 
