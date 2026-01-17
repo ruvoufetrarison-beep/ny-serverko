@@ -4,31 +4,30 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard - Mi.M.Mi</title>
-    <link rel="stylesheet" href="/style.css">
+    <style>
+        :root { --pink: #ff1493; --bg: #fff0f5; }
+        body { background: var(--bg); font-family: sans-serif; margin: 0; padding: 20px; display: flex; justify-content: center; }
+        .container { width: 100%; max-width: 450px; text-align: center; }
+        .badge { background: var(--pink); color: white; padding: 8px 20px; border-radius: 20px; display: inline-block; margin: 15px 0; font-weight: bold; }
+        .menu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 20px; }
+        .btn { background: white; border: none; padding: 25px 10px; border-radius: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); font-weight: bold; color: #444; cursor: pointer; }
+        .logout { color: red; grid-column: span 2; }
+        .box { background: white; padding: 20px; border-radius: 25px; margin-top: 20px; display: none; text-align: left; }
+    </style>
 </head>
 <body>
     <div class="container">
-        <header>
-            <h2>Tonga soa, <span id="userName" style="color:#ff1493;">...</span>!</h2>
-            <div class="badge">ID: <span id="mmmId">...</span></div>
-        </header>
-
+        <h2>Tonga soa, <span id="userName" style="color:var(--pink);">...</span>!</h2>
+        <div class="badge">ID: <span id="mmmId">...</span></div>
+        
         <div class="menu-grid">
-            <button class="menu-item" onclick="showSec('msg')">📩 Hafatra</button>
-            <button class="menu-item" onclick="showSec('mbr')">👥 Mpikambana</button>
-            <button class="menu-item logout" onclick="location.href='/'">🚪 Hivoaka</button>
+            <button class="btn" onclick="show('mbr')">👥 Mpikambana</button>
+            <button class="btn" onclick="show('msg')">📩 Hafatra</button>
+            <button class="btn logout" onclick="hivoaka()">🚪 Hivoaka</button>
         </div>
 
-        <div id="msg" class="box" style="display:none;">
-            <h3>Handefa Hafatra</h3>
-            <textarea id="txt" placeholder="Soraty eto..."></textarea>
-            <button class="btn-send" onclick="alert('Nalefa!')">Alefaso</button>
-        </div>
-
-        <div id="mbr" class="box" style="display:none;">
-            <h3>Lisitry ny Mpikambana</h3>
-            <div id="list"></div>
-        </div>
+        <div id="mbr" class="box"><h3>Lisitry ny Mpikambana</h3><div id="list">Mampiditra...</div></div>
+        <div id="msg" class="box"><h3>Handefa Hafatra</h3><textarea style="width:100%; height:70px; border-radius:10px; border:1px solid #ddd; padding:10px;"></textarea><button style="width:100%; background:var(--pink); color:white; border:none; padding:10px; border-radius:20px; margin-top:10px;">ALEFASO</button></div>
     </div>
     <script src="/js/dashboard.js"></script>
 </body>

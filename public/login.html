@@ -6,32 +6,35 @@
     <title>Mi.M.Mi - Login</title>
     <style>
         :root { --pink: #ff1493; --gold: #daa520; --bg: #fff0f5; }
-        body { background: var(--bg); font-family: sans-serif; margin: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; }
-        .card { background: white; padding: 30px; border-radius: 30px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); width: 85%; max-width: 380px; text-align: center; }
+        body { background: var(--bg); font-family: 'Segoe UI', sans-serif; margin: 0; display: flex; align-items: center; justify-content: center; min-height: 100vh; }
+        .card { background: white; padding: 35px; border-radius: 40px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); width: 85%; max-width: 350px; text-align: center; }
         h1 { color: var(--pink); font-size: 2.5rem; margin: 0; }
-        .slogan { color: var(--gold); font-size: 0.8rem; margin-bottom: 25px; }
-        input { width: 100%; padding: 15px; margin: 10px 0; border: 1px solid #eee; border-radius: 25px; box-sizing: border-box; outline: none; background: #fafafa; }
-        .btn-main { width: 100%; padding: 15px; background: var(--pink); color: white; border: none; border-radius: 25px; font-weight: bold; cursor: pointer; margin-top: 15px; }
+        .slogan { color: var(--gold); font-size: 0.8rem; margin-bottom: 30px; }
+        .tabs { display: flex; justify-content: space-around; margin-bottom: 25px; }
+        .tab { color: var(--pink); font-weight: bold; cursor: pointer; padding: 8px 15px; }
+        .active { background: var(--pink); color: white; border-radius: 20px; }
+        input { width: 100%; padding: 15px; margin: 10px 0; border: 1px solid #eee; border-radius: 25px; box-sizing: border-box; background: #fafafa; outline: none; }
+        .btn-go { width: 100%; padding: 15px; background: var(--pink); color: white; border: none; border-radius: 25px; font-weight: bold; cursor: pointer; margin-top: 15px; font-size: 1rem; }
     </style>
 </head>
 <body>
-    <h1>Mi.M.Mi</h1>
-    <p class="slogan">Mivavaka • Miray Hina • Mifankatia</p>
     <div class="card">
-        <div style="margin-bottom:20px; color:var(--pink); font-weight:bold;">HIRONA</div>
-        <input type="text" id="user" placeholder="Anarana">
-        <input type="password" id="pass" placeholder="Tenimiafina">
-        <button class="btn-main" onclick="miditra()">HIDITRA</button>
+        <h1>Mi.M.Mi</h1>
+        <p class="slogan">Mivavaka • Miray Hina • Mifankatia</p>
+        <div class="tabs"><div class="tab active">EFA MEMBRE</div><div class="tab">HIRONA</div></div>
+        <input type="text" id="u" placeholder="Laharana finday">
+        <input type="password" id="p" placeholder="Tenimiafina">
+        <button class="btn-go" onclick="miditra()">HIDITRA</button>
     </div>
     <script>
         async function miditra() {
-            const username = document.getElementById('user').value;
-            const password = document.getElementById('pass').value;
-            if(!username || !password) return alert("Fenoy ny banga!");
+            const u = document.getElementById('u').value;
+            const p = document.getElementById('p').value;
+            if(!u || !p) return alert("Fenoy ny banga!");
             const res = await fetch('/api/signup', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({username, password})
+                body: JSON.stringify({username: u, password: p})
             });
             const data = await res.json();
             if(data.success) {
