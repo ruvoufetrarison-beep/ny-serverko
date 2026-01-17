@@ -1,45 +1,31 @@
 const express = require('express');
-const http = require('http');
-const { Server } = require('socket.io');
-const fs = require('fs');
-
+const path = require('path');
 const app = express();
-const server = http.createServer(app);
-const io = new Server(server);
-
-const DB_FILE = './mpikambana.json';
-const RESAKA_FILE = './resaka.json';
 
 app.use(express.json());
 app.use(express.static('public'));
 
-if (!fs.existsSync(DB_FILE)) fs.writeFileSync(DB_FILE, JSON.stringify([]));
+// Tahiry vonjimaika
+let users = [];
 
-app.post('/signup', (req, res) => {
-    const { tel, password, anarana, fanampiny, adiresy, taona } = req.body;
-    let data = JSON.parse(fs.readFileSync(DB_FILE));
-    
-    // Generer MMM + 10 chiffres aléatoires
-    const randomDigits = Math.floor(Math.random() * 9000000000) + 1000000000;
-    const mmiId = "MMM" + randomDigits;
-
-    const vaovao = { 
-        id: mmiId, tel, password, anarana, fanampiny, adiresy, taona,
-        avatar: `https://api.dicebear.com/7.x/avataaars/svg?seed=${mmiId}`,
-        joinedDate: new Date().toLocaleDateString()
-    };
-    
-    data.push(vaovao);
-    fs.writeFileSync(DB_FILE, JSON.stringify(data, null, 2));
-    res.json({ success: true, member: vaovao });
+// Pejy fidirana (Login)
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'login.html'));
 });
 
-app.post('/login', (req, res) => {
-    const { tel, password } = req.body;
-    const data = JSON.parse(fs.readFileSync(DB_FILE));
-    const user = data.find(u => u.tel === tel && u.password === password);
-    res.json(user ? { success: true, member: user } : { success: false });
+// Pejy Dashboard
+app.get('/dashboard', (req, res) => {
+    res.sendFile(path.join(__dirname, 'views', 'dashboard.html'));
 });
 
-server.listen(process.env.PORT || 3000);
+// API Signup
+app.post('/api/signup', (req, res) => {
+    const { username, password } = req.body;
+    const mmm_id = `MMM-${Math.floor(1000 + Math.random() * 9000)}`;
+    users.push({ username, password, mmm_id });
+    res.json({ success: true, mmm_id });
+});
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log("Server mandeha amin'ny port " + PORT));
 
