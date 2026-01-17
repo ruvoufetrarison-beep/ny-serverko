@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="mg">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MI.M.Mi - Gold Chat</title>
+    <style>
+        body { background: #0f0c29; color: white; font-family: sans-serif; display: flex; flex-direction: column; height: 100vh; margin: 0; }
+        #chat-box { flex: 1; overflow-y: auto; padding: 20px; border-bottom: 1px solid #d4af37; }
+        .input-area { padding: 20px; display: flex; gap: 10px; background: #24243e; }
+        input { flex: 1; padding: 12px; border-radius: 20px; border: 1px solid #d4af37; background: rgba(255,255,255,0.1); color: white; outline: none; }
+        button { background: #d4af37; color: black; border: none; padding: 10px 20px; border-radius: 20px; font-weight: bold; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <div id="chat-box"></div>
+    <div class="input-area">
+        <input type="text" id="userInput" placeholder="Manontania an'i MI.M.Mi...">
+        <button onclick="sendMessage()">ALERASO</button>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
