@@ -5,52 +5,76 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mi.M.Mi - Dashboard</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" />
     <style>
         :root { --pink: #ff1493; --gold: #daa520; }
-        body { background: #fdf2f8; font-family: sans-serif; margin: 0; padding-bottom: 30px; }
-        .header { background: var(--pink); color: white; padding: 25px; border-radius: 0 0 30px 30px; display: flex; align-items: center; justify-content: space-between; }
-        .swiper { width: 90%; height: 150px; border-radius: 20px; margin: 20px auto; }
-        .swiper-slide { background: white; display: flex; align-items: center; justify-content: center; text-align: center; padding: 15px; }
-        .card { background: white; width: 85%; margin: -30px auto 20px; padding: 20px; border-radius: 25px; box-shadow: 0 10px 20px rgba(0,0,0,0.05); text-align: center; }
-        .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; padding: 0 20px; }
-        .item { background: white; padding: 15px 5px; border-radius: 15px; text-align: center; font-size: 0.7rem; border: none; }
-        .item i { display: block; font-size: 1.3rem; color: var(--pink); margin-bottom: 5px; }
-        .modal { position: fixed; bottom: 0; width: 100%; background: white; border-radius: 30px 30px 0 0; padding: 25px; box-sizing: border-box; transform: translateY(100%); transition: 0.4s; z-index: 1000; }
-        .modal.active { transform: translateY(0); }
-        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: none; z-index: 999; }
+        body { background: #fdf2f8; font-family: sans-serif; margin: 0; padding-bottom: 70px; }
+        .header { background: var(--pink); color: white; padding: 25px; border-radius: 0 0 30px 30px; }
+        .card { background: white; width: 90%; margin: -25px auto 15px; padding: 20px; border-radius: 20px; box-sizing: border-box; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+        .history { max-height: 150px; overflow-y: auto; font-size: 0.85rem; }
+        .h-item { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #eee; }
+        .chat-area { height: 250px; overflow-y: auto; background: #fff; border-radius: 15px; padding: 10px; margin-bottom: 10px; border: 1px solid #f0f0f0; }
+        .msg { margin-bottom: 8px; font-size: 0.85rem; }
+        .nav { position: fixed; bottom: 0; width: 100%; background: white; display: flex; justify-content: space-around; padding: 15px 0; border-top: 1px solid #eee; }
     </style>
 </head>
 <body>
     <div class="header">
-        <img src="/logo.jpg" style="width:45px; border-radius:50%; border:2px solid white;">
-        <div style="text-align:right">
-            <div id="uName" style="font-weight:bold;">...</div>
-            <div id="uId" style="font-size:0.7rem;">...</div>
-        </div>
+        <h3 id="uName" style="margin:0;">...</h3>
+        <small id="uId">...</small>
     </div>
-    <div class="swiper mySwiper">
-        <div class="swiper-wrapper">
-            <div class="swiper-slide" style="background:var(--pink); color:white;">Fifankatiavana no hery!</div>
-            <div class="swiper-slide">Fivoriana: Alarobia 2h</div>
-        </div>
-    </div>
+
     <div class="card">
-        <div style="font-size:0.7rem; color:gray;">SOLFO (COTISATION)</div>
-        <div style="font-size:2rem; font-weight:bold; color:var(--gold);"><span id="uSolfo">0</span> Ar</div>
+        <small style="color:gray;">SOLFO COTISATION</small>
+        <h2 style="color:var(--gold); margin:5px 0;"><span id="uSolfo">0</span> Ar</h2>
+        <hr style="border:0; border-top:1px solid #eee; margin:15px 0;">
+        <div class="history" id="uHistory">Tsy mbola misy tantara...</div>
     </div>
-    <div class="grid">
-        <button class="item" onclick="openM('mbr')"><i class="fas fa-users"></i>Mpanaraka</button>
-        <button class="item" onclick="openM('faq')"><i class="fas fa-question-circle"></i>FAQ</button>
-        <button class="item" onclick="location.href='https://wa.me/261340475417'"><i class="fab fa-whatsapp"></i>Support</button>
-        <button class="item" onclick="hivoaka()"><i class="fas fa-power-off"></i>Hivoaka</button>
+
+    <div class="card">
+        <h4 style="margin:0 0 10px 0; color:var(--pink);"><i class="fas fa-comments"></i> Resaka Iombonana</h4>
+        <div id="chat" class="chat-area"></div>
+        <div style="display:flex; gap:8px;">
+            <input type="text" id="msg" style="flex:1; padding:12px; border-radius:25px; border:1px solid #ddd;" placeholder="Soraty ny hafatra...">
+            <button onclick="send()" style="background:var(--pink); color:white; border:none; width:45px; height:45px; border-radius:50%;"><i class="fas fa-paper-plane"></i></button>
+        </div>
     </div>
-    <div class="overlay" id="overlay" onclick="closeM()"></div>
-    <div id="mbr" class="modal"><h3>Mpikambana</h3><div id="listM">...</div></div>
-    <div id="faq" class="modal"><h3>FAQ</h3><p>Support: 034 04 754 17</p></div>
-    <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
-    <script src="/js/dashboard.js"></script>
-    <script>var swiper = new Swiper(".mySwiper", { autoplay: true });</script>
+
+    <div class="nav">
+        <i class="fas fa-home" style="color:var(--pink)"></i>
+        <i class="fas fa-user-circle" onclick="alert('Profil & Sary ho avy!')"></i>
+        <i class="fas fa-sign-out-alt" onclick="location.href='/'"></i>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        const socket = io();
+        const user = JSON.parse(localStorage.getItem('user'));
+        if(!user) location.href = "/";
+
+        document.getElementById('uName').innerText = user.username;
+        document.getElementById('uId').innerText = user.mmm_id;
+        document.getElementById('uSolfo').innerText = (user.solfo || 0).toLocaleString();
+
+        if(user.history && user.history.length > 0) {
+            document.getElementById('uHistory').innerHTML = user.history.map(h => `
+                <div class="h-item"><span>${h.date}</span> <b style="color:green;">+${h.amount} Ar</b></div>
+            `).join('');
+        }
+
+        function send() {
+            const m = document.getElementById('msg').value;
+            if(m) {
+                socket.emit('send_msg', { user: user.username, text: m });
+                document.getElementById('msg').value = '';
+            }
+        }
+
+        socket.on('receive_msg', (data) => {
+            const c = document.getElementById('chat');
+            c.innerHTML += `<div class="msg"><b>${data.user}:</b> ${data.text}</div>`;
+            c.scrollTop = c.scrollHeight;
+        });
+    </script>
 </body>
 </html>
 

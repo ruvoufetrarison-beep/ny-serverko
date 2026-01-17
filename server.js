@@ -2,73 +2,51 @@ const express = require('express');
 const fs = require('fs');
 const path = require('path');
 const app = express();
+const http = require('http').createServer(app);
+const io = require('socket.io')(http);
 
 app.use(express.json());
 app.use(express.static('public'));
 
 const DB_FILE = './database.json';
-
-// Mamaky ny Database
-const readDB = () => {
-    if (!fs.existsSync(DB_FILE)) return [];
-    try {
-        const data = fs.readFileSync(DB_FILE);
-        return JSON.parse(data);
-    } catch (e) { 
-        return []; 
-    }
-};
-
-// Manitsy ny Database
+const readDB = () => { if (!fs.existsSync(DB_FILE)) return []; return JSON.parse(fs.readFileSync(DB_FILE)); };
 const writeDB = (data) => fs.writeFileSync(DB_FILE, JSON.stringify(data, null, 2));
 
-// Pejy fidirana
+// --- ROUTES ---
 app.get('/', (req, res) => res.sendFile(path.join(__dirname, 'public', 'login.html')));
 app.get('/dashboard', (req, res) => res.sendFile(path.join(__dirname, 'views', 'dashboard.html')));
+app.get('/admin-mimi', (req, res) => res.sendFile(path.join(__dirname, 'public', 'admin.html')));
 
-// --- API REHEFA MANAO SIGNUP (HIRONA) ---
+// Sign Up
 app.post('/api/register', (req, res) => {
-    try {
-        const { username, phone, password, address, age } = req.body;
-        const users = readDB();
+    const users = readDB();
+    const mmm_id = `MMM-${Math.floor(1000 + Math.random() * 9000)}`;
+    const newUser = { ...req.body, mmm_id, solfo: 0, history: [], date_joined: new Date().toLocaleDateString('mg-MG') };
+    users.push(newUser);
+    writeDB(users);
+    res.json({ success: true, mmm_id, user: newUser });
+});
 
-        // Famoronana ID manokana MMM-XXXX
-        const mmm_id = `MMM-${Math.floor(1000 + Math.random() * 9000)}`;
-
-        const newUser = { 
-            username, 
-            phone, 
-            password, 
-            address, 
-            age,
-            mmm_id, 
-            solfo: 0, 
-            history: [], // Tantaran'ny cotisation
-            date_joined: new Date().toLocaleDateString('mg-MG') 
-        };
-
-        users.push(newUser);
+// Admin: Fanampiana Cotisation
+app.post('/api/admin/update-solfo', (req, res) => {
+    const { mmm_id, amount } = req.body;
+    let users = readDB();
+    const index = users.findIndex(u => u.mmm_id === mmm_id);
+    if (index !== -1) {
+        users[index].solfo += parseInt(amount);
+        users[index].history.unshift({ date: new Date().toLocaleDateString('mg-MG'), amount: amount });
         writeDB(users);
-
-        console.log(`Mpikambana vaovao tafiditra: ${username} (${mmm_id})`);
-        res.json({ success: true, mmm_id, user: newUser });
-
-    } catch (error) {
-        console.error("Erreur register:", error);
-        res.status(500).json({ success: false, message: "Nisy olana teo am-pitahirizana" });
+        return res.json({ success: true });
     }
+    res.status(404).json({ success: false });
 });
 
-// API fakana ny lisitry ny mpikambana
-app.get('/api/members', (req, res) => {
-    res.json(readDB());
+app.get('/api/members', (req, res) => res.json(readDB()));
+
+// --- REAL-TIME CHAT (B) ---
+io.on('connection', (socket) => {
+    socket.on('send_msg', (data) => { io.emit('receive_msg', data); });
 });
 
-// Port ho an'ny Render
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-    console.log(`=================================`);
-    console.log(`SERVER MI.M.MI MIASA EO @ PORT ${PORT}`);
-    console.log(`=================================`);
-});
+http.listen(process.env.PORT || 3000, () => console.log("SERVER_V2_READY"));
 
