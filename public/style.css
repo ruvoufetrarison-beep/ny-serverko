@@ -1,42 +1,104 @@
+:root {
+    --pink: #ff1493;
+    --gold: #daa520;
+    --bg: #fff0f5;
+    --white: #ffffff;
+}
+
+body {
+    background-color: var(--bg);
+    font-family: 'Segoe UI', Roboto, sans-serif;
+    margin: 0;
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+}
+
+.container {
+    width: 100%;
+    max-width: 800px;
+    text-align: center;
+}
+
+.dashboard-header {
+    margin-bottom: 30px;
+}
+
+.pink-text { color: var(--pink); }
+
+.id-badge {
+    display: inline-block;
+    background: var(--pink);
+    color: white;
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-weight: bold;
+}
+
+/* GRID SYSTEM: 2 columns amin'ny PC, 1 column amin'ny Mobile */
 .menu-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
     gap: 15px;
-    margin: 20px 0;
+    margin-bottom: 30px;
 }
-.btn-menu {
-    padding: 20px 10px;
+
+.card-btn {
+    background: var(--white);
     border: none;
-    border-radius: 12px;
-    background: #ffffff;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    padding: 25px 15px;
+    border-radius: 20px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
     cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
     font-weight: bold;
+    color: #333;
     transition: 0.3s;
 }
-.btn-menu:hover { transform: translateY(-3px); background: #f0f0f0; }
-.logout { color: #ff4444; }
-.content-section {
-    background: white;
-    padding: 20px;
-    border-radius: 15px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+
+.card-btn:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(255, 20, 147, 0.2);
 }
-.member-card {
-    padding: 10px;
-    border-bottom: 1px solid #eee;
+
+.card-btn .icon { font-size: 1.5rem; }
+.logout { color: #ff4444; }
+
+.content-box {
+    background: var(--white);
+    padding: 20px;
+    border-radius: 25px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
     text-align: left;
 }
-.badge {
-    background: #007bff;
-    color: white;
-    padding: 2px 8px;
-    border-radius: 5px;
-}
+
 textarea {
     width: 100%;
-    border-radius: 8px;
+    height: 100px;
+    border-radius: 15px;
     border: 1px solid #ddd;
     padding: 10px;
+    box-sizing: border-box;
+}
+
+.btn-send {
+    width: 100%;
+    background: var(--pink);
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 20px;
+    margin-top: 10px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+/* TABLET & PC */
+@media (min-width: 600px) {
+    body { padding: 40px; }
+    .menu-grid { grid-template-columns: 1fr 1fr; }
 }
 
