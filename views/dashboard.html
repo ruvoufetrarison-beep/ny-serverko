@@ -10,69 +10,48 @@
         body { background: #fdf2f8; font-family: sans-serif; margin: 0; padding-bottom: 70px; }
         .header { background: var(--pink); color: white; padding: 25px; border-radius: 0 0 30px 30px; }
         .card { background: white; width: 90%; margin: -25px auto 15px; padding: 20px; border-radius: 20px; box-sizing: border-box; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
-        .history { max-height: 150px; overflow-y: auto; font-size: 0.85rem; }
-        .h-item { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #eee; }
-        .chat-area { height: 250px; overflow-y: auto; background: #fff; border-radius: 15px; padding: 10px; margin-bottom: 10px; border: 1px solid #f0f0f0; }
-        .msg { margin-bottom: 8px; font-size: 0.85rem; }
+        .h-item { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #eee; font-size: 0.8rem; }
+        .chat-box { height: 200px; overflow-y: auto; background: #fff; padding: 10px; border: 1px solid #eee; border-radius: 10px; margin-bottom: 10px; }
         .nav { position: fixed; bottom: 0; width: 100%; background: white; display: flex; justify-content: space-around; padding: 15px 0; border-top: 1px solid #eee; }
     </style>
 </head>
 <body>
     <div class="header">
-        <h3 id="uName" style="margin:0;">...</h3>
+        <h3 id="uName">...</h3>
         <small id="uId">...</small>
     </div>
-
     <div class="card">
-        <small style="color:gray;">SOLFO COTISATION</small>
-        <h2 style="color:var(--gold); margin:5px 0;"><span id="uSolfo">0</span> Ar</h2>
-        <hr style="border:0; border-top:1px solid #eee; margin:15px 0;">
-        <div class="history" id="uHistory">Tsy mbola misy tantara...</div>
+        <small>SOLFO COTISATION</small>
+        <h2 style="color:var(--gold);"><span id="uSolfo">0</span> Ar</h2>
+        <div id="uHistory"></div>
     </div>
-
     <div class="card">
-        <h4 style="margin:0 0 10px 0; color:var(--pink);"><i class="fas fa-comments"></i> Resaka Iombonana</h4>
-        <div id="chat" class="chat-area"></div>
-        <div style="display:flex; gap:8px;">
-            <input type="text" id="msg" style="flex:1; padding:12px; border-radius:25px; border:1px solid #ddd;" placeholder="Soraty ny hafatra...">
-            <button onclick="send()" style="background:var(--pink); color:white; border:none; width:45px; height:45px; border-radius:50%;"><i class="fas fa-paper-plane"></i></button>
-        </div>
+        <h4 style="color:var(--pink); margin-top:0;">Chat Mi.M.Mi</h4>
+        <div id="chat" class="chat-box"></div>
+        <input type="text" id="msg" style="width:70%; padding:10px; border-radius:20px; border:1px solid #ddd;" placeholder="Hiresaka...">
+        <button onclick="send()" style="background:var(--pink); color:white; border:none; padding:10px; border-radius:50%;"><i class="fas fa-paper-plane"></i></button>
     </div>
-
     <div class="nav">
         <i class="fas fa-home" style="color:var(--pink)"></i>
-        <i class="fas fa-user-circle" onclick="alert('Profil & Sary ho avy!')"></i>
         <i class="fas fa-sign-out-alt" onclick="location.href='/'"></i>
     </div>
-
     <script src="/socket.io/socket.io.js"></script>
     <script>
         const socket = io();
         const user = JSON.parse(localStorage.getItem('user'));
         if(!user) location.href = "/";
-
         document.getElementById('uName').innerText = user.username;
         document.getElementById('uId').innerText = user.mmm_id;
         document.getElementById('uSolfo').innerText = (user.solfo || 0).toLocaleString();
-
-        if(user.history && user.history.length > 0) {
-            document.getElementById('uHistory').innerHTML = user.history.map(h => `
-                <div class="h-item"><span>${h.date}</span> <b style="color:green;">+${h.amount} Ar</b></div>
-            `).join('');
+        if(user.history) {
+            document.getElementById('uHistory').innerHTML = user.history.map(h => `<div class="h-item"><span>${h.date}</span> <b>+${h.amount} Ar</b></div>`).join('');
         }
-
         function send() {
             const m = document.getElementById('msg').value;
-            if(m) {
-                socket.emit('send_msg', { user: user.username, text: m });
-                document.getElementById('msg').value = '';
-            }
+            if(m) { socket.emit('send_msg', { user: user.username, text: m }); document.getElementById('msg').value = ''; }
         }
-
         socket.on('receive_msg', (data) => {
-            const c = document.getElementById('chat');
-            c.innerHTML += `<div class="msg"><b>${data.user}:</b> ${data.text}</div>`;
-            c.scrollTop = c.scrollHeight;
+            document.getElementById('chat').innerHTML += `<div><b>${data.user}:</b> ${data.text}</div>`;
         });
     </script>
 </body>

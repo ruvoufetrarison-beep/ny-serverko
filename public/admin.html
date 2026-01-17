@@ -4,16 +4,15 @@
     <title>Mi.M.Mi - Admin</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
-        body { font-family: 'Poppins', sans-serif; background: #fdf2f8; padding: 20px; }
+        body { font-family: sans-serif; background: #fdf2f8; padding: 20px; }
         .card { background: white; padding: 15px; border-radius: 15px; margin-bottom: 10px; border-left: 5px solid #ff1493; }
-        input { padding: 10px; border: 1px solid #ddd; border-radius: 10px; width: 100px; }
-        button { background: #ff1493; color: white; border: none; padding: 10px 15px; border-radius: 10px; font-weight: bold; }
+        input { padding: 10px; border: 1px solid #ddd; border-radius: 10px; width: 80px; }
+        button { background: #ff1493; color: white; border: none; padding: 10px; border-radius: 10px; }
     </style>
 </head>
 <body>
-    <h2 style="color:#ff1493;">Fitantanana Mi.M.Mi</h2>
+    <h2 style="color:#ff1493;">Admin Mi.M.Mi</h2>
     <div id="list">Miandry kely...</div>
-
     <script>
         async function load() {
             const res = await fetch('/api/members');
@@ -21,22 +20,20 @@
             document.getElementById('list').innerHTML = members.map(m => `
                 <div class="card">
                     <b>${m.username}</b> (${m.mmm_id})<br>
-                    <small>Adiresy: ${m.address}</small><br>
-                    Solfo: <b style="color:gold;">${m.solfo} Ar</b><br><br>
-                    <input type="number" id="in-${m.mmm_id}" placeholder="Vola Ar">
+                    Solfo: <b>${m.solfo} Ar</b><br><br>
+                    <input type="number" id="in-${m.mmm_id}" placeholder="Vola">
                     <button onclick="update('${m.mmm_id}')">Hampiditra</button>
                 </div>
             `).join('');
         }
         async function update(id) {
             const val = document.getElementById('in-'+id).value;
-            if(!val) return alert("Ampidiro ny vola!");
             await fetch('/api/admin/update-solfo', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({ mmm_id: id, amount: val })
             });
-            alert("Vita soa aman-tsara!"); load();
+            alert("Vita!"); load();
         }
         load();
     </script>
