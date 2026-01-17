@@ -15,7 +15,10 @@ function show(id) {
 async function fetchM() {
     const res = await fetch('/api/members');
     const members = await res.json();
-    document.getElementById('list').innerHTML = members.map(m => `<div style="padding:10px; border-bottom:1px solid #eee;"><strong>${m.username}</strong> (${m.mmm_id})</div>`).join('');
+    document.getElementById('list').innerHTML = members.map(m => `
+        <div style="padding:10px; border-bottom:1px solid #eee;">
+            <strong>${m.username}</strong> (${m.mmm_id})
+        </div>`).join('');
 }
 
 function hivoaka() { localStorage.removeItem('user'); window.location.href = "/"; }
