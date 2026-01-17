@@ -4,60 +4,105 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mi.M.Mi - Hirona</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root { --pink: #ff1493; --gold: #daa520; }
         body { background: #fff0f5; font-family: sans-serif; display: flex; align-items: center; justify-content: center; min-height: 100vh; margin: 0; }
         .box { background: white; padding: 30px; border-radius: 30px; width: 85%; max-width: 380px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
-        .step { display: none; } .active { display: block; }
-        input { width: 100%; padding: 15px; margin: 10px 0; border: 1px solid #eee; border-radius: 25px; box-sizing: border-box; outline: none; }
-        .btn { width: 100%; padding: 15px; background: var(--pink); color: white; border: none; border-radius: 25px; font-weight: bold; cursor: pointer; }
-        #popup { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); display: none; align-items: center; justify-content: center; }
+        .step { display: none; } 
+        .active { display: block; animation: fadeIn 0.4s; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        input { width: 100%; padding: 15px; margin: 10px 0; border: 1px solid #eee; border-radius: 25px; box-sizing: border-box; outline: none; background: #fafafa; }
+        .btn { width: 100%; padding: 15px; background: var(--pink); color: white; border: none; border-radius: 25px; font-weight: bold; cursor: pointer; margin-top: 10px; transition: 0.3s; }
+        .btn:active { transform: scale(0.95); }
+        #popup { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); display: none; align-items: center; justify-content: center; z-index: 1000; }
+        .pop-card { background: white; padding: 30px; border-radius: 30px; text-align: center; width: 80%; max-width: 320px; }
     </style>
 </head>
 <body>
     <div class="box">
-        <h2 style="color:var(--pink)">Mi.M.Mi</h2>
+        <img src="/logo.jpg" style="width:70px; border-radius:50%; border:2px solid var(--gold); margin-bottom:10px;" onerror="this.src='https://via.placeholder.com/70'">
+        <h2 style="color:var(--pink); margin: 0;">Mi.M.Mi</h2>
+        <p style="font-size:0.8rem; color:var(--gold); margin-bottom:20px;">Mivavaka • Miray Hina • Mifankatia</p>
+
         <div id="s1" class="step active">
-            <input type="number" id="phone" placeholder="Laharana finday">
+            <input type="number" id="phone" placeholder="Laharana finday (034...)">
             <input type="password" id="pass" placeholder="Tenimiafina">
             <button class="btn" onclick="next()">MANARAKA</button>
         </div>
+
         <div id="s2" class="step">
             <input type="text" id="name" placeholder="Anarana feno">
             <input type="text" id="addr" placeholder="Adiresy fonenana">
             <input type="number" id="age" placeholder="Taona">
-            <button class="btn" onclick="finish()">HIRONA</button>
+            <button class="btn" id="btnHirona" onclick="finish()">HIRONA</button>
+            <p style="font-size: 0.7rem; color: gray; margin-top: 10px; cursor:pointer;" onclick="location.reload()">Hiverina</p>
         </div>
     </div>
+
     <div id="popup">
-        <div style="background:white; padding:30px; border-radius:30px; text-align:center; width:80%;">
-            <h3>Tongasoa!</h3>
-            <p>Ity ny ID-nao: <br><b id="mid" style="font-size:1.5rem; color:var(--gold)"></b></p>
-            <button class="btn" onclick="location.href='/dashboard'">HIDITRA</button>
+        <div class="pop-card">
+            <i class="fas fa-check-circle" style="font-size:3rem; color:var(--pink); margin-bottom:15px;"></i>
+            <h3>Vita soa aman-tsara!</h3>
+            <p style="font-size: 0.9rem;">Ity ny ID-nao manokana:</p>
+            <div id="mid" style="font-size:1.8rem; font-weight:bold; color:var(--gold); margin:15px 0; letter-spacing: 2px;"></div>
+            <button class="btn" onclick="location.href='/dashboard'">HIDITRA AO AMIN'NY APP</button>
         </div>
     </div>
+
     <script>
-        let data = {};
+        let userData = {};
+
         function next() {
-            data.phone = document.getElementById('phone').value;
-            data.password = document.getElementById('pass').value;
+            const p = document.getElementById('phone').value;
+            const ps = document.getElementById('pass').value;
+            if(!p || !ps) return alert("Fenoy ny banga azafady!");
+            
+            userData.phone = p;
+            userData.password = ps;
+            
             document.getElementById('s1').classList.remove('active');
             document.getElementById('s2').classList.add('active');
         }
+
         async function finish() {
-            data.username = document.getElementById('name').value;
-            data.address = document.getElementById('addr').value;
-            data.age = document.getElementById('age').value;
-            const res = await fetch('/api/register', {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify(data)
-            });
-            const resData = await res.json();
-            if(resData.success) {
-                document.getElementById('mid').innerText = resData.mmm_id;
-                document.getElementById('popup').style.display = 'flex';
-                localStorage.setItem('user', JSON.stringify(resData.user));
+            const n = document.getElementById('name').value;
+            const a = document.getElementById('addr').value;
+            const ag = document.getElementById('age').value;
+
+            if(!n || !a || !ag) return alert("Fenoy ny mombamomba anao rehetra!");
+
+            userData.username = n;
+            userData.address = a;
+            userData.age = ag;
+
+            // Fanovana API ho /api/register (Correction)
+            const btn = document.getElementById('btnHirona');
+            btn.innerText = "Miandry kely...";
+            btn.disabled = true;
+
+            try {
+                const res = await fetch('/api/register', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(userData)
+                });
+                
+                const resData = await res.json();
+                
+                if(resData.success) {
+                    document.getElementById('mid').innerText = resData.mmm_id;
+                    document.getElementById('popup').style.display = 'flex';
+                    localStorage.setItem('user', JSON.stringify(resData.user));
+                } else {
+                    alert("Nisy olana: " + (resData.message || "Tsy fantatra"));
+                    btn.innerText = "HIRONA";
+                    btn.disabled = false;
+                }
+            } catch (err) {
+                alert("Tsy mitsahatra ny fifandraisana amin'ny server. Hamarino ny internet!");
+                btn.innerText = "HIRONA";
+                btn.disabled = false;
             }
         }
     </script>
