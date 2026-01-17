@@ -1,37 +1,22 @@
-function showSection(id) {
-    document.querySelectorAll('.content-section').forEach(s => s.style.display = 'none');
-    document.getElementById(id).style.display = 'block';
-    if(id === 'members') loadMembers();
-}
-
-async function loadMembers() {
-    const listDiv = document.getElementById('memberList');
-    try {
-        const res = await fetch('/api/members');
-        const data = await res.json();
-        if (data.length === 0) {
-            listDiv.innerHTML = "<p>Tsy misy mpikambana hita.</p>";
-            return;
-        }
-        listDiv.innerHTML = data.map(m => `
-            <div class="member-card">
-                <strong>${m.username}</strong><br>
-                <small>${m.mmm_id || 'Tsy misy ID'}</small>
-            </div>
-        `).join('');
-    } catch (e) {
-        listDiv.innerHTML = "<p style='color:red;'>Fahadisoana teo am-pangalana ny lisitra.</p>";
+document.addEventListener('DOMContentLoaded', () => {
+    const data = JSON.parse(localStorage.getItem('user'));
+    if(data) {
+        document.getElementById('userName').innerText = data.username;
+        document.getElementById('mmmId').innerText = data.mmm_id;
     }
+});
+
+function showSec(id) {
+    document.querySelectorAll('.box').forEach(b => b.style.display = 'none');
+    document.getElementById(id).style.display = 'block';
+    if(id === 'mbr') fetchMembers();
 }
 
-function sendMsg() {
-    const msg = document.getElementById('msgInput').value;
-    if(!msg) return alert("Soraty aloha ny hafatra!");
-    alert("Nalefa ny hafatra: " + msg);
-    document.getElementById('msgInput').value = "";
-}
-
-function logout() {
-    window.location.href = "/logout";
+async function fetchMembers() {
+    const res = await fetch('/api/members');
+    const members = await res.json();
+    document.getElementById('list').innerHTML = members.map(m => 
+        `<div style="border-bottom:1px solid #eee; padding:10px;">${m.username} (${m.mmm_id})</div>`
+    ).join('');
 }
 

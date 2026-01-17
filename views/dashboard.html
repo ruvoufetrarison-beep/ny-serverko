@@ -8,41 +8,26 @@
 </head>
 <body>
     <div class="container">
-        <header class="dashboard-header">
-            <h1>Tonga soa, <span id="userName" class="pink-text">Mpikambana</span>!</h1>
-            <div class="id-badge">ID: <span id="mmmId">...</span></div>
+        <header>
+            <h2>Tonga soa, <span id="userName" style="color:#ff1493;">...</span>!</h2>
+            <div class="badge">ID: <span id="mmmId">...</span></div>
         </header>
 
         <div class="menu-grid">
-            <button class="card-btn" onclick="showSection('messages')">
-                <span class="icon">📩</span>
-                <span>Handefa Hafatra</span>
-            </button>
-            <button class="card-btn" onclick="showSection('members')">
-                <span class="icon">👥</span>
-                <span>Lisitry ny Mpikambana</span>
-            </button>
-            <button class="card-btn" onclick="location.href='/profil'">
-                <span class="icon">👤</span>
-                <span>Ny Profil-ko</span>
-            </button>
-            <button class="card-btn logout" onclick="logout()">
-                <span class="icon">🚪</span>
-                <span>Hivoaka</span>
-            </button>
+            <button class="menu-item" onclick="showSec('msg')">📩 Hafatra</button>
+            <button class="menu-item" onclick="showSec('mbr')">👥 Mpikambana</button>
+            <button class="menu-item logout" onclick="location.href='/'">🚪 Hivoaka</button>
         </div>
 
-        <div id="messages" class="content-box" style="display:none;">
-            <h3>Hafatra ho an'ny Admin</h3>
-            <textarea id="msgInput" placeholder="Soraty eto ny hafatray..."></textarea>
-            <button onclick="sendMsg()" class="btn-send">Alefaso</button>
+        <div id="msg" class="box" style="display:none;">
+            <h3>Handefa Hafatra</h3>
+            <textarea id="txt" placeholder="Soraty eto..."></textarea>
+            <button class="btn-send" onclick="alert('Nalefa!')">Alefaso</button>
         </div>
 
-        <div id="members" class="content-box" style="display:none;">
-            <h3>Mpikambana Mi.M.Mi</h3>
-            <div id="memberList" class="list-container">
-                <p>Eo am-pitadiavana ny lisitra...</p>
-            </div>
+        <div id="mbr" class="box" style="display:none;">
+            <h3>Lisitry ny Mpikambana</h3>
+            <div id="list"></div>
         </div>
     </div>
     <script src="/js/dashboard.js"></script>

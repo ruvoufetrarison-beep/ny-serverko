@@ -5,31 +5,33 @@ const app = express();
 app.use(express.json());
 app.use(express.static('public'));
 
-let users = []; 
+// Tahiry vonjimaika (Database)
+let users = [{ username: "Admin Mi.M.Mi", mmm_id: "MMM-2026-000" }]; 
 
-// Hitondra any amin'ny login.html rehefa sokafana ny site
+// Pejy fidirana
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'login.html'));
 });
 
-// Pejy Dashboard (ao amin'ny folder views)
+// Pejy Dashboard
 app.get('/dashboard', (req, res) => {
     res.sendFile(path.join(__dirname, 'views', 'dashboard.html'));
 });
 
-// API handraisana ny login/signup
+// API Signup/Login
 app.post('/api/signup', (req, res) => {
     const { username, password } = req.body;
-    const mmm_id = `MMM-${Math.floor(1000 + Math.random() * 9999)}`;
-    users.push({ username, password, mmm_id });
-    res.json({ success: true, mmm_id });
+    const mmm_id = `MMM-${Math.floor(1000 + Math.random() * 9000)}`;
+    const newUser = { username, password, mmm_id };
+    users.push(newUser);
+    res.json({ success: true, user: newUser });
 });
 
-// API hahitana ny mpikambana ao amin'ny Dashboard
+// API Lisitry ny mpikambana
 app.get('/api/members', (req, res) => {
     res.json(users);
 });
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log("Server mandeha..."));
+app.listen(PORT, () => console.log(`Server mandeha @ ${PORT}`));
 
